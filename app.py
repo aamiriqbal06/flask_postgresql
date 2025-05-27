@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect
-from db import tasklist_db, add_task
+from db import tasklist_db, add_task,update_call,delete_call
 
 app = Flask(__name__)
 
@@ -17,5 +17,19 @@ def add():
         add_task(task,date)
         return redirect("/")
 
+@app.route("/update/<int:uid>", methods=["POST"])
+def update(uid):
+    if request.method == "POST":
+        utask=request.form["u_task"]
+        udate=request.form["u_date"]
+        print(utask,udate,uid)
+        update_call(utask,udate,uid)
+        return redirect("/")
+
+@app.route("/delete/<int:uid>")
+def delete(uid):
+    delete_call(uid)
+    return redirect("/")
+
 if __name__ == "__main__": 
-    app.run(debug=True)
+    app.run(debug=False)
